@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzyl.mapper.MemberMapper">
+
+    <resultMap id="MemberResultMap" type="com.zzyl.entity.Member">
+        <id column="id" property="id"/>
+        <result column="phone" property="phone"/>
+        <result column="name" property="name"/>
+        <result column="avatar" property="avatar"/>
+        <result column="open_id" property="openId"/>
+        <result column="gender" property="gender"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_by" property="createBy"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <sql id="selectMemberVo">
+        select id, phone, name, avatar, open_id, gender, create_time, update_time, create_by, update_by, remark
+        from member
+    </sql>
+
+    <select id="getByOpenId" parameterType="String" resultMap="MemberResultMap">
+        <include refid="selectMemberVo"/>
+        where open_id = #{openId}
+    </select>
+
+    <select id="getById" parameterType="Long" resultMap="MemberResultMap">
+        <include refid="selectMemberVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="add" parameterType="com.zzyl.entity.Member" useGeneratedKeys="true" keyProperty="id">
+        insert into member (
+            phone,
+            name,
+            avatar,
+            open_id,
+            gender,
+            create_time,
+            update_time,
+            create_by,
+            update_by,
+            remark
+        ) values (
+            #{phone},
+            #{name},
+            #{avatar},
+            #{openId},
+            #{gender},
+            #{createTime},
+            #{updateTime},
+            #{createBy},
+            #{updateBy},
+            #{remark}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.zzyl.entity.Member">
+        update member
+        <set>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="openId != null">open_id = #{openId},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzyl.mapper.BedMapper">
+    <resultMap id="BedResultMap" type="com.zzyl.entity.Bed">
+        <id column="id" property="id"/>
+        <result column="bed_number" property="bedNumber"/>
+        <result column="bed_status" property="bedStatus"/>
+        <result column="room_id" property="roomId"/>
+        <result property="sort" column="sort"/>
+        <result column="create_by" property="createBy"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="BedVoResultMap" type="com.zzyl.vo.BedVo">
+        <id column="id" property="id"/>
+        <result column="bed_number" property="bedNumber"/>
+        <result column="bed_status" property="bedStatus"/>
+        <result column="room_id" property="roomId"/>
+        <result property="sort" column="sort"/>
+        <result column="create_by" property="createBy"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="lname" property="lname"/>
+        <result column="ename" property="name"/>
+        <result column="eid" property="elderId"/>
+        <result column="price" property="price"/>
+    </resultMap>
+
+   <insert id="addBed" parameterType="com.zzyl.entity.Bed">
+        insert into bed(bed_number, sort, bed_status, room_id, create_by, update_by, remark, create_time, update_time)
+        values (#{bedNumber}, #{sort}, #{bedStatus}, #{roomId}, #{createBy}, #{updateBy}, #{remark}, #{createTime},
+                #{updateTime})
+    </insert>
+    <delete id="deleteBedById" parameterType="java.lang.Long">
+        delete
+        from bed
+        where id = #{id}
+    </delete>
+    <update id="updateBed" parameterType="com.zzyl.entity.Bed">
+        update bed
+        set bed_number  = #{bedNumber},
+            sort        = #{sort},
+            bed_status  = #{bedStatus},
+            room_id     = #{roomId},
+            update_time = #{updateTime},
+            update_by   = #{updateBy}
+        where id = #{id}
+    </update>
+    <select id="getBedById" resultMap="BedResultMap" parameterType="java.lang.Long">
+        select id, bed_number, sort, bed_status, room_id
+        from bed
+        where id = #{id}
+    </select>
+</mapper>

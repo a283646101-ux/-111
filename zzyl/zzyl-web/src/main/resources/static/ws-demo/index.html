@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZZYL WebSocket Demo</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --panel: #111827;
+            --text: #e5e7eb;
+            --ok: #10b981;
+            --warn: #f59e0b;
+            --err: #ef4444;
+            --line: #334155;
+            --btn: #2563eb;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "PingFang SC", sans-serif;
+            background: radial-gradient(circle at 20% 20%, #1e293b 0, var(--bg) 48%);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 18px;
+        }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .panel {
+            background: rgba(17,24,39,.92);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 12px;
+        }
+        .row { display: flex; gap: 8px; margin-bottom: 8px; }
+        input, textarea, button {
+            border-radius: 8px;
+            border: 1px solid var(--line);
+            background: #0b1220;
+            color: var(--text);
+            padding: 8px;
+        }
+        input, textarea { width: 100%; }
+        textarea { min-height: 84px; resize: vertical; }
+        button { background: var(--btn); cursor: pointer; }
+        #status { font-weight: 700; }
+        .ok { color: var(--ok); }
+        .warn { color: var(--warn); }
+        .err { color: var(--err); }
+        #log {
+            height: 340px;
+            overflow: auto;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            line-height: 1.45;
+            white-space: pre-wrap;
+            background: #020617;
+            border-radius: 10px;
+            padding: 10px;
+            border: 1px solid var(--line);
+        }
+        .full { grid-column: 1 / -1; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <h2>ZZYL WebSocket 实时通信 Demo</h2>
+    <div class="grid">
+        <div class="panel">
+            <div class="row"><input id="token" placeholder="JWT token"></div>
+            <div class="row">
+                <input id="rooms" placeholder="初始房间(逗号分隔)">
+                <button id="connectBtn">连接</button>
+                <button id="disconnectBtn">断开</button>
+            </div>
+            <div class="row">状态: <span id="status" class="warn">DISCONNECTED</span></div>
+            <div class="row">
+                <input id="room" placeholder="room">
+                <button id="joinBtn">入房</button>
+                <button id="leaveBtn">退房</button>
+            </div>
+            <div class="row">
+                <input id="toUser" placeholder="私聊目标 userId">
+            </div>
+            <textarea id="content" placeholder="消息内容"></textarea>
+            <div class="row">
+                <button id="sendBroadcast">广播</button>
+                <button id="sendRoom">房间广播</button>
+                <button id="sendDirect">点对点</button>
+                <button id="sendBinary">二进制</button>
+                <button id="sendHeartbeat">心跳</button>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="row"><button id="statsBtn">读取服务端状态</button></div>
+            <div id="stats"></div>
+            <h4>日志</h4>
+            <div id="log"></div>
+        </div>
+        <div class="panel full">
+            使用说明: 先填 token，再连接；连接成功后可订阅房间并发消息。客户端具备自动重连（指数退避）和心跳保活。
+        </div>
+    </div>
+</div>
+<script src="./ws-demo.js"></script>
+</body>
+</html>
